@@ -11,6 +11,15 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 - **Node.js Native Test Runner** - Testes E2E sem dependências externas pesadas.
 - **Swagger** - Documentação interativa da API.
 
+## ☁️ Deploy no Render
+
+Para hospedar esta API no **Render**, utilize as seguintes configurações:
+
+1. **Environment**: `Node`
+2. **Build Command**: `npm install && npm run build`
+3. **Start Command**: `npm start`
+4. **Node Version**: Certifique-se de definir a variável de ambiente `NODE_VERSION` como `22.5.0` ou superior.
+
 ## 🛠️ Funcionalidades
 
 - **CRUD de Produtos**: Cadastro, listagem, atualização e exclusão.
@@ -27,17 +36,20 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 ## 🔧 Instalação e Execução
 
 1. Clone o repositório:
+
    ```bash
    git clone https://github.com/roberto-aurtty/stock-control.git
    cd stock-control
    ```
 
 2. Instale as dependências:
+
    ```bash
    npm install
    ```
 
 3. Inicie o servidor em modo de desenvolvimento:
+
    ```bash
    npm run dev
    ```
@@ -48,6 +60,7 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 ## 🧪 Testes
 
 Para executar a suite de testes E2E:
+
 ```bash
 npm test
 ```
@@ -75,4 +88,5 @@ src/
 - `DELETE /products/:id`: Remove um produto do estoque.
 
 ---
+
 Desenvolvido por [Roberto Aurtty](https://github.com/roberto-aurtty)
