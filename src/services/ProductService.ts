@@ -16,7 +16,7 @@ class ProductService {
     const query = db.prepare(
       "SELECT COUNT(*) as count FROM products WHERE sku = ?",
     );
-    const result = query.get(sku) as { count: number };
+    const result = query.get(sku) as unknown as { count: number };
     return result.count === 0;
   }
 
@@ -43,7 +43,7 @@ class ProductService {
       sku,
       productData.category || null,
       productData.stock || 0,
-    ) as Product;
+    ) as unknown as Product;
 
     logger.info(`Produto criado: ${result.name} (SKU: ${result.sku})`);
     return result;
@@ -85,7 +85,7 @@ class ProductService {
 
     // Count total for pagination
     const countSql = sql.replace("SELECT *", "SELECT COUNT(*) as total");
-    const totalResult = db.prepare(countSql).get(...params) as {
+    const totalResult = db.prepare(countSql).get(...params) as unknown as {
       total: number;
     };
 
@@ -93,7 +93,7 @@ class ProductService {
     sql += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
     params.push(limit, offset);
 
-    const products = db.prepare(sql).all(...params) as Product[];
+    const products = db.prepare(sql).all(...params) as unknown as Product[];
 
     return {
       data: products,
@@ -108,7 +108,7 @@ class ProductService {
 
   public getProductById(id: number): Product | null {
     const query = db.prepare("SELECT * FROM products WHERE id = ?");
-    return query.get(id) as Product | null;
+    return query.get(id) as unknown as Product | null;
   }
 
   public updateProduct(
@@ -131,7 +131,7 @@ class ProductService {
       RETURNING *
     `);
 
-    return query.get(...params) as Product;
+    return query.get(...params) as unknown as Product;
   }
 
   public deleteProduct(id: number): boolean {
