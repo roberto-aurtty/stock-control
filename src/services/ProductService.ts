@@ -4,7 +4,6 @@ import logger from "../config/logger.js";
 
 class ProductService {
   private generateSKU(): string {
-    // Generates a 9-digit random numeric SKU
     let sku = "";
     for (let i = 0; i < 9; i++) {
       sku += Math.floor(Math.random() * 10).toString();
@@ -13,51 +12,37 @@ class ProductService {
   }
 
   private async isSKUUnique(sku: string): Promise<boolean> {
-    const query = db.prepare(
-      "SELECT COUNT(*) as count FROM products WHERE sku = ?",
-    );
-    const result = query.get(sku) as unknown as { count: number };
+    const result = db.prepare("SELECT COUNT(*) as count FROM products WHERE sku = ?").get(sku) as { count: number };
     return result.count === 0;
   }
 
-  public async createProduct(
-    productData: Omit<Product, "id" | "sku" | "created_at">,
-  ): Promise<Product> {
+  public async createProduct(productData: Omit<Product, "id" | "sku" | "created_at">): Promise<Product> {
     let sku = this.generateSKU();
-
-    // Ensure SKU is unique
     while (!(await this.isSKUUnique(sku))) {
       sku = this.generateSKU();
     }
 
-    const query = db.prepare(`
+    const stmt = db.prepare(`
       INSERT INTO products (name, description, price, sku, category, stock)
       VALUES (?, ?, ?, ?, ?, ?)
       RETURNING *
     `);
 
-    const result = query.get(
+    const result = stmt.get(
       productData.name,
       productData.description || null,
       productData.price,
       sku,
       productData.category || null,
-      productData.stock || 0,
-    ) as unknown as Product;
+      productData.stock || 0
+    ) as Product;
 
     logger.info(`Produto criado: ${result.name} (SKU: ${result.sku})`);
     return result;
   }
 
   public listProducts(filters: ProductFilters) {
-    const {
-      name,
-      category,
-      minPrice,
-      maxPrice,
-      page = 1,
-      limit = 10,
-    } = filters;
+    const { name, category, minPrice, maxPrice, page = 1, limit = 10 } = filters;
     const offset = (page - 1) * limit;
 
     let sql = "SELECT * FROM products WHERE 1=1";
@@ -67,33 +52,26 @@ class ProductService {
       sql += " AND name LIKE ?";
       params.push(`%${name}%`);
     }
-
     if (category) {
       sql += " AND category = ?";
       params.push(category);
     }
-
     if (minPrice !== undefined) {
       sql += " AND price >= ?";
       params.push(minPrice);
     }
-
     if (maxPrice !== undefined) {
       sql += " AND price <= ?";
       params.push(maxPrice);
     }
 
-    // Count total for pagination
     const countSql = sql.replace("SELECT *", "SELECT COUNT(*) as total");
-    const totalResult = db.prepare(countSql).get(...params) as unknown as {
-      total: number;
-    };
+    const totalResult = db.prepare(countSql).get(...params) as { total: number };
 
-    // Add pagination
     sql += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
     params.push(limit, offset);
 
-    const products = db.prepare(sql).all(...params) as unknown as Product[];
+    const products = db.prepare(sql).all(...params) as Product[];
 
     return {
       data: products,
@@ -107,14 +85,10 @@ class ProductService {
   }
 
   public getProductById(id: number): Product | null {
-    const query = db.prepare("SELECT * FROM products WHERE id = ?");
-    return query.get(id) as unknown as Product | null;
+    return db.prepare("SELECT * FROM products WHERE id = ?").get(id) as Product | null;
   }
 
-  public updateProduct(
-    id: number,
-    productData: Partial<Omit<Product, "id" | "sku" | "created_at">>,
-  ): Product | null {
+  public updateProduct(id: number, productData: Partial<Omit<Product, "id" | "sku" | "created_at">>): Product | null {
     const existing = this.getProductById(id);
     if (!existing) return null;
 
@@ -124,19 +98,18 @@ class ProductService {
     const setClause = fields.map((field) => `${field} = ?`).join(", ");
     const params = [...Object.values(productData), id];
 
-    const query = db.prepare(`
+    const result = db.prepare(`
       UPDATE products 
       SET ${setClause}
       WHERE id = ?
       RETURNING *
-    `);
+    `).get(...params) as Product;
 
-    return query.get(...params) as unknown as Product;
+    return result;
   }
 
   public deleteProduct(id: number): boolean {
-    const query = db.prepare("DELETE FROM products WHERE id = ?");
-    const result = query.run(id);
+    const result = db.prepare("DELETE FROM products WHERE id = ?").run(id);
     return result.changes > 0;
   }
 }

@@ -1,4 +1,4 @@
-import { DatabaseSync } from "node:sqlite";
+import Database from "better-sqlite3";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import logger from "../config/logger.js";
@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const dbPath = path.resolve(__dirname, "../../database.sqlite");
-const db = new DatabaseSync(dbPath);
+const db = new Database(dbPath);
 
 // Initialize the database
 export const initDb = () => {
