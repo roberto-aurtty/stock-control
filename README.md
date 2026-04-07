@@ -2,6 +2,9 @@
 
 Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node.js, TypeScript e SQLite nativo.
 
+🔗 **Link da API em Produção**: [https://stock-control-7mxb.onrender.com](https://stock-control-7mxb.onrender.com)  
+📖 **Documentação Swagger (Live)**: [https://stock-control-7mxb.onrender.com/api-docs/](https://stock-control-7mxb.onrender.com/api-docs/)
+
 ## 🚀 Tecnologias
 
 - **Node.js** (v22.5.0+) - Utilizando o módulo nativo `node:sqlite`.
