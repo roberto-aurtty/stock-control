@@ -16,9 +16,11 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 Para hospedar esta API no **Render**, utilize as seguintes configurações:
 
 1. **Environment**: `Node`
-2. **Build Command**: `npm install && npm run build`
+2. **Build Command**: `npm install && npm run build` (ou apenas `npm install` se estiver usando o script `postinstall` que adicionei).
 3. **Start Command**: `npm start`
-4. **Node Version**: Certifique-se de definir a variável de ambiente `NODE_VERSION` como `22.5.0` ou superior.
+4. **Variáveis de Ambiente**:
+   - `NODE_VERSION`: Defina como `22.5.0` ou superior.
+   - `PORT`: O Render define isso automaticamente, mas a API já está preparada para usar `process.env.PORT`.
 
 ## 🛠️ Funcionalidades
 
