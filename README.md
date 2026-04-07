@@ -16,11 +16,11 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 Para hospedar esta API no **Render**, utilize as seguintes configurações:
 
 1. **Environment**: `Node`
-2. **Build Command**: `npm install && npm run build` (ou apenas `npm install` se estiver usando o script `postinstall` que adicionei).
+2. **Build Command**: `npm install` (o build ocorre via script `postinstall`).
 3. **Start Command**: `npm start`
 4. **Variáveis de Ambiente**:
-   - `NODE_VERSION`: Defina como `22.5.0` ou superior.
-   - `PORT`: O Render define isso automaticamente, mas a API já está preparada para usar `process.env.PORT`.
+   - `NODE_VERSION`: Defina como `22.12.0` (ou superior) para garantir o suporte ao módulo `node:sqlite`.
+   - `PORT`: O Render define isso automaticamente.
 
 ## 🛠️ Funcionalidades
 
