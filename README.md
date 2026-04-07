@@ -14,17 +14,6 @@ Uma API REST robusta para controle de estoque de produtos, desenvolvida com Node
 - **Node.js Native Test Runner** - Testes E2E sem dependências externas pesadas.
 - **Swagger** - Documentação interativa da API.
 
-## ☁️ Deploy no Render
-
-Para hospedar esta API no **Render**, utilize as seguintes configurações:
-
-1. **Environment**: `Node`
-2. **Build Command**: `npm install` (o build ocorre via script `postinstall`).
-3. **Start Command**: `npm start`
-4. **Variáveis de Ambiente**:
-   - `NODE_VERSION`: Defina como `22.12.0` (ou superior) para garantir o suporte ao módulo `node:sqlite`.
-   - `PORT`: O Render define isso automaticamente.
-
 ## 🛠️ Funcionalidades
 
 - **CRUD de Produtos**: Cadastro, listagem, atualização e exclusão.
